@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\MapLocation;
+use App\Http\Livewire\RuteLocation;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +28,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/map', MapLocation::class)->middleware();
+
+Route::get('/rute', RuteLocation::class)->middleware();
 
 Route::get('/data', function () {
     return view('data');

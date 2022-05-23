@@ -34,6 +34,8 @@
 
 @push('scripts')
 <script>
+
+    document.addEventListener('livewire:load', () => {
     mapboxgl.accessToken = '{{env("MAPBOX_KEY")}}';
     const map = new mapboxgl.Map({
         container: 'map', // container ID
@@ -41,12 +43,30 @@
         center: [99.148474, 2.383970], // starting position [lng, lat]
         zoom: 15 // starting zoom
     });
+    const loadLocations = (geoJson) => {
+       geoJson.features.forEach((location) => {
+            const {geometry, properties} = location
+            const {iconSize, locationId} = properties
 
-    const marker = new mapboxgl.Marker({
-        color: "#FFFFFF",
-        draggable: true
-    }).setLngLat([99.148474, 2.383970])
-        .addTo(map);
-    </script>
+            let markerElement = document.createElement('div')
+            markerElement.className = 'marker' + locationId
+            markerElement.id = locationId
+            markerElement.style.backgroundImage = 'url(https://cdn1.iconfinder.com/data/icons/social-messaging-ui-color/254000/66-512.png)'
+            markerElement.style.backgroundSize = 'cover'
+            markerElement.style.width = '50px'
+            markerElement.style.height = '50px'
+
+            
+            new mapboxgl.Marker(markerElement)
+            .setLngLat(geometry.coordinates)
+            .addTo(map)
+        })
+    }
+
+    loadLocations({!! $geoJson !!})
+})
+
+</script>
+    
 @endpush
 
